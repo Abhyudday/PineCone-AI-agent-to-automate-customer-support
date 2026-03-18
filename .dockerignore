@@ -1,0 +1,14 @@
+.env
+.env.example
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+README.md
+nixpacks.toml
+railway.json
+Procfile
+runtime.txt
