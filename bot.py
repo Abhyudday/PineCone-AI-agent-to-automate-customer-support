@@ -230,8 +230,9 @@ async def fetch_tx_details(tx_hash: str) -> dict:
             },
         )
         tx_data = tx_response.json()
-        tx_result = tx_data.get("result", {})
-        if not isinstance(tx_result, dict):
+        logger.info(f"TX API response: {tx_data}")
+        tx_result = tx_data.get("result")
+        if tx_result is None or not isinstance(tx_result, dict):
             tx_result = {}
 
         receipt_response = await client.get(
