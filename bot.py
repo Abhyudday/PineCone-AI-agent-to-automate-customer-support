@@ -219,7 +219,7 @@ def decode_method(input_data: str) -> str:
 
 
 async def fetch_tx_details(tx_hash: str) -> dict:
-    base_url = "https://api.polygonscan.com/v2/api"
+    base_url = "https://api.etherscan.io/v2/api"
     chain_id = "137"
     
     async with httpx.AsyncClient() as client:
