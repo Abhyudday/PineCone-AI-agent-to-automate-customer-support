@@ -219,10 +219,14 @@ def decode_method(input_data: str) -> str:
 
 
 async def fetch_tx_details(tx_hash: str) -> dict:
+    base_url = "https://api.polygonscan.com/v2/api"
+    chain_id = "137"
+    
     async with httpx.AsyncClient() as client:
         tx_response = await client.get(
-            "https://api.polygonscan.com/api",
+            base_url,
             params={
+                "chainid": chain_id,
                 "module": "proxy",
                 "action": "eth_getTransactionByHash",
                 "txhash": tx_hash,
@@ -236,8 +240,9 @@ async def fetch_tx_details(tx_hash: str) -> dict:
             tx_result = {}
 
         receipt_response = await client.get(
-            "https://api.polygonscan.com/api",
+            base_url,
             params={
+                "chainid": chain_id,
                 "module": "proxy",
                 "action": "eth_getTransactionReceipt",
                 "txhash": tx_hash,
@@ -250,8 +255,9 @@ async def fetch_tx_details(tx_hash: str) -> dict:
             receipt_result = {}
 
         internal_response = await client.get(
-            "https://api.polygonscan.com/api",
+            base_url,
             params={
+                "chainid": chain_id,
                 "module": "account",
                 "action": "txlistinternal",
                 "txhash": tx_hash,
@@ -267,8 +273,9 @@ async def fetch_tx_details(tx_hash: str) -> dict:
         token_result = []
         if from_addr:
             token_response = await client.get(
-                "https://api.polygonscan.com/api",
+                base_url,
                 params={
+                    "chainid": chain_id,
                     "module": "account",
                     "action": "tokentx",
                     "address": from_addr,
