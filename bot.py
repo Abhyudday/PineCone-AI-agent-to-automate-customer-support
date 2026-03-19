@@ -31,7 +31,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 POLYGONSCAN_API_KEY = os.getenv("POLYGONSCAN_API_KEY")
 
-POLYGON_RPC = "https://polygon-rpc.com"
+POLYGON_RPC = "https://polygon-mainnet.g.alchemy.com/v2/demo"
 POLYGONSCAN_API = "https://api.etherscan.io/v2/api"
 CHAIN_ID = "137"
 
