@@ -1,6 +1,6 @@
 import os
 import logging
-from telegram import Update
+from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 from pinecone import Pinecone
 from pinecone_plugins.assistant.models.chat import Message
@@ -26,7 +26,8 @@ assistant = pc.assistant.Assistant(assistant_name="polycop")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Hi! Send me any message and I'll forward it to the Polycop assistant."
+        "Hi! Send me any message and I'll forward it to the Polycop assistant.",
+        reply_markup=ReplyKeyboardRemove()
     )
 
 
