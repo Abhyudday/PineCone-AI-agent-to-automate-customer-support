@@ -230,6 +230,9 @@ async def fetch_tx_details(tx_hash: str) -> dict:
             },
         )
         tx_data = tx_response.json()
+        tx_result = tx_data.get("result", {})
+        if not isinstance(tx_result, dict):
+            tx_result = {}
 
         receipt_response = await client.get(
             "https://api.polygonscan.com/api",
@@ -241,6 +244,9 @@ async def fetch_tx_details(tx_hash: str) -> dict:
             },
         )
         receipt_data = receipt_response.json()
+        receipt_result = receipt_data.get("result", {})
+        if not isinstance(receipt_result, dict):
+            receipt_result = {}
 
         internal_response = await client.get(
             "https://api.polygonscan.com/api",
@@ -252,28 +258,37 @@ async def fetch_tx_details(tx_hash: str) -> dict:
             },
         )
         internal_data = internal_response.json()
+        internal_result = internal_data.get("result", [])
+        if not isinstance(internal_result, list):
+            internal_result = []
 
-        token_response = await client.get(
-            "https://api.polygonscan.com/api",
-            params={
-                "module": "account",
-                "action": "tokentx",
-                "address": tx_data.get("result", {}).get("from", ""),
-                "startblock": 0,
-                "endblock": 99999999,
-                "page": 1,
-                "offset": 100,
-                "sort": "desc",
-                "apikey": POLYGONSCAN_API_KEY,
-            },
-        )
-        token_data = token_response.json()
+        from_addr = tx_result.get("from", "")
+        token_result = []
+        if from_addr:
+            token_response = await client.get(
+                "https://api.polygonscan.com/api",
+                params={
+                    "module": "account",
+                    "action": "tokentx",
+                    "address": from_addr,
+                    "startblock": 0,
+                    "endblock": 99999999,
+                    "page": 1,
+                    "offset": 100,
+                    "sort": "desc",
+                    "apikey": POLYGONSCAN_API_KEY,
+                },
+            )
+            token_data = token_response.json()
+            token_result = token_data.get("result", [])
+            if not isinstance(token_result, list):
+                token_result = []
 
     return {
-        "tx": tx_data.get("result", {}),
-        "receipt": receipt_data.get("result", {}),
-        "internal": internal_data.get("result", []),
-        "tokens": token_data.get("result", []),
+        "tx": tx_result,
+        "receipt": receipt_result,
+        "internal": internal_result,
+        "tokens": token_result,
     }
 
 
